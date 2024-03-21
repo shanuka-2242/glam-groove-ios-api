@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const productInfoSchema = mongoose.Schema(
     {
-        catagoryID: {
+        productId: {
             type: String
         },
         catagoryName: {
