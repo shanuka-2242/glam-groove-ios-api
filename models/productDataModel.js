@@ -20,6 +20,12 @@ const productInfoSchema = mongoose.Schema(
         productDescription: {
             type: String
         },
+        availableSizes: {
+            type: String
+        },
+        ratings: {
+            type: String
+        },
     })
 
 const ProductInfoModel = mongoose.model('productinfos', productInfoSchema);
