@@ -1,20 +1,17 @@
 const mongoose = require('mongoose')
 
-const orderInfoSchema = mongoose.Schema(
+const itemInfoSchema = mongoose.Schema(
     {
-        orderId: {
+        itemId: {
             type: String
         },
-        productId: {
+        itemName: {
             type: String
         },
-        productName: {
+        itemPrice: {
             type: String
         },
-        productPrice: {
-            type: String
-        },
-        productImage: {
+        itemImage: {
             type: String
         },
         quantity: {
@@ -24,6 +21,16 @@ const orderInfoSchema = mongoose.Schema(
             type: String
         },
     })
+
+const orderInfoSchema = mongoose.Schema({
+    orderId: {
+        type: String
+    },
+    totalPrice: {
+        type: String
+    },
+    items: [itemInfoSchema] 
+});
 
 const OrderInfoModel = mongoose.model('orderinfos', orderInfoSchema);
 
