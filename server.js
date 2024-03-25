@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
 const ProductInfoModel = require('./models/productDataModel')
-const OrderInfoModel = require('./models/orderDataModel')
+const CartItemInfoModel = require('./models/cartItemDataModel')
 const port = 5000
 app.use(express.json())
 
@@ -46,13 +46,13 @@ app.get("/getProductInfo", async (req, res) => {
     }
 });
 
-//Insert Order
-app.post("/insertOrder", async(req, res) => {
+//Insert Cart Item
+app.post("/insertCartItem", async(req, res) => {
     try 
     {
-        const orderInfos = await OrderInfoModel.create(req.body)
-        res.status(200).json(orderInfos);
-        console.log(orderInfos)
+        const cartItemInfos = await CartItemInfoModel.create(req.body)
+        res.status(200).json(cartItemInfos);
+        console.log(cartItemInfos)
     } 
     catch (error) 
     {
@@ -61,13 +61,13 @@ app.post("/insertOrder", async(req, res) => {
     }
 })
 
-//Get Order
-app.get("/getOrderInfo", async (req, res) => {
+//Get Cart Item
+app.get("/getCartItemInfo", async (req, res) => {
     try 
     {
-        const orderInfos = await OrderInfoModel.find({});
-        console.log(orderInfos);
-        res.send(orderInfos);
+        const cartItemInfos = await CartItemInfoModel.find({});
+        console.log(cartItemInfos);
+        res.send(cartItemInfos);
     } 
     catch (err) 
     {
