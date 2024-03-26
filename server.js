@@ -16,6 +16,7 @@ mongoose.connect('mongodb+srv://root:root@webapi.fgpmolr.mongodb.net/web-api-pro
     console.log(error)
 })
 
+//<<<-------------------- Products Api's -------------------->>>
 
 //Insert Product
 app.post("/insertProduct", async(req, res) => {
@@ -33,7 +34,7 @@ app.post("/insertProduct", async(req, res) => {
 })
 
 //Get Product
-app.get("/getProductInfo", async (req, res) => {
+app.get("/getProducts", async (req, res) => {
     try 
     {
         const productInfos = await ProductInfoModel.find({});
@@ -45,6 +46,8 @@ app.get("/getProductInfo", async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
+//<<<-------------------- Cart Items Api's -------------------->>>
 
 //Insert Cart Item
 app.post("/insertCartItem", async(req, res) => {
@@ -62,7 +65,7 @@ app.post("/insertCartItem", async(req, res) => {
 })
 
 //Get Cart Item
-app.get("/getCartItemInfo", async (req, res) => {
+app.get("/getCartItems", async (req, res) => {
     try 
     {
         const cartItemInfos = await CartItemInfoModel.find({});
@@ -74,3 +77,20 @@ app.get("/getCartItemInfo", async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
+//Remove cart item from cart item ID
+app.delete('/deleteCartItems/:id', async (req, res) => {
+    try {
+      const cartItemId = req.params.id;
+      const deletedCartItem = await CartItemInfoModel.findOneAndDelete({ cartItemId: cartItemId });
+  
+      if (!deletedCartItem) {
+        return res.status(404).json({ message: 'Cart item not found' });
+      }
+  
+      res.status(200).json({ message: 'Cart item deleted successfully', deletedCartItem });
+    } catch (error) {
+      console.error('Error deleting cart item:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
