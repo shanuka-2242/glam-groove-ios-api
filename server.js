@@ -79,7 +79,7 @@ app.get("/getCartItems", async (req, res) => {
 });
 
 //Remove cart item from cart item ID
-app.delete('/deleteCartItems/:id', async (req, res) => {
+app.delete('/removeCartItem/:id', async (req, res) => {
     try {
       const cartItemId = req.params.id;
       const deletedCartItem = await CartItemInfoModel.findOneAndDelete({ cartItemId: cartItemId });
