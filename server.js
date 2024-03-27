@@ -3,7 +3,7 @@ const app = express()
 const mongoose = require('mongoose')
 const ProductInfoModel = require('./models/productDataModel')
 const CartItemInfoModel = require('./models/cartItemDataModel')
-const port = 5000
+const port = 3000
 app.use(express.json())
 
 //DB Connect
@@ -82,15 +82,33 @@ app.get("/getCartItems", async (req, res) => {
 app.delete('/removeCartItem/:id', async (req, res) => {
     try {
       const cartItemId = req.params.id;
-      const deletedCartItem = await CartItemInfoModel.findOneAndDelete({ cartItemId: cartItemId });
+      const removedCartItem = await CartItemInfoModel.findOneAndDelete({ cartItemId: cartItemId });
   
-      if (!deletedCartItem) {
+      if (!removedCartItem) {
         return res.status(404).json({ message: 'Cart item not found' });
       }
   
-      res.status(200).json({ message: 'Cart item deleted successfully', deletedCartItem });
+      res.status(200).json({ message: 'Cart item deleted successfully', removedCartItem });
     } catch (error) {
       console.error('Error deleting cart item:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+  //Update cart item by ID
+app.put('/updateCartItem/:id', async (req, res) => {
+    try {
+      const cartItemId = req.params.id;
+      const { quantity, cartItemSelectedSize, itemsTotalPrice } = req.body;
+      const updatedCartItem = await Item.findByIdAndUpdate(cartItemId, { quantity, cartItemSelectedSize, itemsTotalPrice }, { new: true });
+  
+      if (!updatedCartItem) {
+        return res.status(404).json({ message: 'Cart item not found' });
+      }
+  
+      res.status(200).json({ message: 'Cart item updated successfully', updatedItem });
+    } catch (error) {
+      console.error('Error updating cart item:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
   });
