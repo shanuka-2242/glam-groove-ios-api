@@ -3,7 +3,7 @@ const app = express()
 const mongoose = require('mongoose')
 const ProductInfoModel = require('./models/productDataModel')
 const CartItemInfoModel = require('./models/cartItemDataModel')
-const port = 3000
+const port = 5040
 app.use(express.json())
 
 //DB Connect
@@ -96,17 +96,22 @@ app.delete('/removeCartItem/:id', async (req, res) => {
   });
 
   //Update cart item by ID
-app.put('/updateCartItem/:id', async (req, res) => {
+  app.put('/updateCartItem/:id', async (req, res) => {
     try {
       const cartItemId = req.params.id;
-      const { quantity, cartItemSelectedSize, itemsTotalPrice } = req.body;
-      const updatedCartItem = await Item.findByIdAndUpdate(cartItemId, { quantity, cartItemSelectedSize, itemsTotalPrice }, { new: true });
+      const updatedValues = req.body;
   
+      const existingItem = await CartItemInfoModel.findOne({ cartItemId: updatedValues.cartItemId });
+      if (existingItem && existingItem.cartItemId.toString() !== cartItemId) {
+        return res.status(400).json({ message: 'cartItemId must be unique' });
+      }
+  
+      const updatedCartItem = await CartItemInfoModel.findOneAndUpdate({ cartItemId }, updatedValues, { new: true });
       if (!updatedCartItem) {
         return res.status(404).json({ message: 'Cart item not found' });
       }
   
-      res.status(200).json({ message: 'Cart item updated successfully', updatedItem });
+      res.status(200).json({ message: 'Cart item updated successfully', updatedCartItem });
     } catch (error) {
       console.error('Error updating cart item:', error);
       res.status(500).json({ message: 'Internal server error' });
