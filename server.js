@@ -3,7 +3,7 @@ const app = express()
 const mongoose = require('mongoose')
 const ProductInfoModel = require('./models/productDataModel')
 const CartItemInfoModel = require('./models/cartItemDataModel')
-const port = 5040
+const port = 5000
 app.use(express.json())
 
 //DB Connect
