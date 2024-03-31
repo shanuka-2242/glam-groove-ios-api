@@ -3,6 +3,8 @@ const app = express()
 const mongoose = require('mongoose')
 const ProductInfoModel = require('./models/productDataModel')
 const CartItemInfoModel = require('./models/cartItemDataModel')
+const UserInfoModel = require('./models/userDataModel')
+
 const port = 5000
 app.use(express.json())
 
@@ -15,6 +17,37 @@ mongoose.connect('mongodb+srv://root:root@webapi.fgpmolr.mongodb.net/web-api-pro
 }).catch((error) => {
     console.log(error)
 })
+
+//<<<-------------------- Products Api's -------------------->>>
+
+//Insert User
+app.post("/insertUser", async(req, res) => {
+  try 
+  {
+      const userInfos = await UserInfoModel.create(req.body)
+      res.status(200).json(userInfos);
+      console.log(userInfos)
+  } 
+  catch (error) 
+  {
+      console.log(error)
+      res.status(500).json({message: error.message});
+  }
+})
+
+//Get User
+app.get("/getUsers", async (req, res) => {
+  try 
+  {
+      const userInfos = await UserInfoModel.find({});
+      console.log(userInfos);
+      res.send(userInfos);
+  } 
+  catch (err) 
+  {
+      res.status(500).json({ error: err.message });
+  }
+});
 
 //<<<-------------------- Products Api's -------------------->>>
 
